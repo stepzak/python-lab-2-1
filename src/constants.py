@@ -1,1 +1,3 @@
-SAMPLE_CONSTANT: int = 10
+from pathlib import Path
+
+TASKS_FILE: Path = Path("tasks.txt").absolute()
