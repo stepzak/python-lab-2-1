@@ -1,13 +1,14 @@
 import pytest
-from src.constants import TASKS_FILE
+from src.constants import TASKS_FILE, API_URL
 from src.consumer import consumer
-from src.sources import FileSource, GeneratorSource
+from src.sources import FileSource, GeneratorSource, ApiSource
 
 @pytest.mark.parametrize(
     "source_cls, args, err",
     [
         (FileSource, (TASKS_FILE,), None),
         (GeneratorSource, (5,), None),
+        (ApiSource, (API_URL,), None),
         (int, (1,), TypeError),
     ]
 )
