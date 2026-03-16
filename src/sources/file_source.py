@@ -14,6 +14,8 @@ class FileSource:
             for line in f:
                 payload = {}
                 data = line.rstrip().split(",")
+                if len(headers) != len(data)-1:
+                    raise TypeError(f"Expected {len(headers)} headers, got {len(data) - 1}")
                 for i in range(1, len(data)):
                     payload[headers[i-1]] = data[i]
                 yield Task(id = int(data[0]), payload = payload)
