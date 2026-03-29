@@ -84,3 +84,4 @@ class PriorityDescriptor:
         if not isinstance(value, int) or value < self.min_priority or value > self.max_priority:
             raise InvalidPriorityError(f"Priority must be between {self.min_priority} and {self.max_priority}")
 
+        setattr(instance, self.inner_name, value)

@@ -11,7 +11,7 @@ class GeneratorSource:
     def get_tasks(self) -> Iterable[Task]:
         while self.cur_task < self.max_tasks:
             yield Task(
-                id = self.cur_task,
-                payload = {"name": f"Task N {self.cur_task}"}
+                description = f"Task {self.cur_task}",
+                payload = {"name": f"Task N {self.cur_task}", "n": self.cur_task},
             )
             self.cur_task += 1

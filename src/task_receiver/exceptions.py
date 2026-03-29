@@ -3,19 +3,17 @@ class ImmutableError(TypeError):
         self.message = f"Field '{field}' is immutable"
         super().__init__(self.message)
 
-
-class NotCreatedError(RuntimeError):
+class TaskException(Exception):
     def __init__(self, message):
         self.message = message
         super().__init__(self.message)
 
+class NotCreatedError(TaskException, RuntimeError): ...
 
-class InvalidPriorityError(TypeError):
-    def __init__(self, message):
-        self.message = message
-        super().__init__(self.message)
+class InvalidPriorityError(TaskException, TypeError): ...
 
-class InvalidStatusError(ValueError):
-    def __init__(self, message):
-        self.message = message
-        super().__init__(self.message)
+class InvalidStatusError(TaskException, ValueError): ...
+
+class ExpiredError(TaskException, RuntimeError): ...
+
+class CancelledError(TaskException, RuntimeError): ...

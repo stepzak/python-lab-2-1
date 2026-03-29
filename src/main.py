@@ -1,8 +1,12 @@
+import sys
+
 from src.consumer import consumer
 from src.sources import GeneratorSource, FileSource
 from src.constants import TASKS_FILE, API_URL
 from src.sources.api_source import ApiSource
+import logging
 
+logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 
 def main() -> None:
     """

@@ -1,6 +1,10 @@
+import logging
+
 from src.task_receiver.source import TaskSource
 from src.task_receiver.task import Task
 from src.utils.checkers import strict_annotations
+
+logger = logging.getLogger(__name__)
 
 @strict_annotations()
 def consumer(source: TaskSource) -> list[Task]:
@@ -13,7 +17,9 @@ def consumer(source: TaskSource) -> list[Task]:
     tasks = source.get_tasks()
     completed = []
     for task in tasks:
-        print(f"Executing task {task.id} with payload {task.payload}")
-        completed.append(task)
+        logger.info(f"Executing task {task.id}")
+        task.start()
+        task.result = {"result": "ok"}
+        completed.append((task.result, task.description, task.status))
 
     return completed

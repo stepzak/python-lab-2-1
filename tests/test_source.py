@@ -17,7 +17,9 @@ def test_source(source_cls, args, err):
     if not err:
         tasks = []
         for task in source.get_tasks():
-            tasks.append(task)
+            task.start()
+            task.result = {"result": "ok"}
+            tasks.append((task.result, task.description, task.status))
 
         new_source = source_cls(*args)
         ret = consumer(new_source)

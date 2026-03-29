@@ -11,5 +11,5 @@ class ApiSource:
     def get_tasks(self) -> Iterable[Task]:
         for i in range(self.n_tasks):
             payload = {"n_task": i, "url": self.url}
-            yield Task(id = i, payload = payload)
+            yield Task(description = f"API Task {i}", payload = payload)
             time.sleep(0.02)
