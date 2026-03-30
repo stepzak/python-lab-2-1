@@ -4,5 +4,12 @@
     "priority": 10,
     "deadline": "2026-12-31T23:59:59",
     "payload": {"module": "auth"}
+  },
+  {
+    "description": "cd",
+    "payload": {"fds":  23}
+  },
+  {
+    "broken": "task"
   }
 ]
