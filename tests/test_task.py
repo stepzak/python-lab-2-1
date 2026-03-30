@@ -11,16 +11,6 @@ from src.task_receiver.exceptions import (
 )
 
 
-@pytest.fixture
-def task_params():
-    return {"description": "Test task", "priority": 5}
-
-
-@pytest.fixture
-def task(task_params):
-    return Task(**task_params)
-
-
 class TestTaskDescriptors:
     def test_id_is_lazy_and_unique(self, task):
         task_id = task.id

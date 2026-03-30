@@ -35,6 +35,14 @@ logger = logging.getLogger(__name__)
 
 
 class Task:
+    """
+    Class representing a task
+    id: UUID
+    description: str
+    status: Status
+    deadline: datetime
+    payload: dict
+    """
     __slots__ = (
         "_id", "_status", "_priority", "_created_at", "_description", "_result", "_exception", "_deadline", "_payload"
     )
@@ -76,10 +84,19 @@ class Task:
 
     @property
     def expired(self) -> bool:
+        """
+        Is task expired
+        :return: bool
+        """
         return self.time_left < 0
 
     @property
     def result(self):
+        """
+        Returns the result of the task.
+        :return: Any
+        :raises Exception if task failed
+        """
         if self.exception:
             raise self.exception
         return self._result
@@ -88,6 +105,13 @@ class Task:
     @not_completed
     @not_expired
     def result(self, value):
+        """
+        Set the result of the task.
+        :param value:
+        :return: None
+        :raise ExpiredError if task expired
+        :raise CancelledError if task was cancelled
+        """
         self._result = value
         self.status = descriptors.Status.SUCCESS
 
