@@ -13,3 +13,6 @@ class ApiSource:
             payload = {"n_task": i, "url": self.url}
             yield Task(description = f"API Task {i}", payload = payload)
             time.sleep(0.02)
+
+
+    def load_tasks(self) -> None: ...

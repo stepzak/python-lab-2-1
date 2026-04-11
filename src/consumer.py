@@ -14,6 +14,7 @@ def consumer(source: TaskSource) -> list[Task]:
     :return: None
     :raises: TypeError if source is not TaskSource
     """
+    source.load_tasks()
     tasks = source.get_tasks()
     completed = []
     for task in tasks:

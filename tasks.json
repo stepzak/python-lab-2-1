@@ -1,7 +1,7 @@
 [
   {
     "description": "Task bla bla bla",
-    "priority": 10,
+    "priority": 1,
     "deadline": "2026-12-31T23:59:59",
     "payload": {"module": "auth"}
   },

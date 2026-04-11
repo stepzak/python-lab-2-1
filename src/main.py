@@ -13,7 +13,7 @@ def main() -> None:
     Обязательнная составляющая программ, которые сдаются. Является точкой входа в приложение
     :return: Данная функция ничего не возвращает
     """
-    sources = [GeneratorSource(), FileSource(TASKS_FILE), ApiSource(API_URL)]
+    sources = [FileSource(TASKS_FILE)]
     for source in sources:
         consumer(source)
 

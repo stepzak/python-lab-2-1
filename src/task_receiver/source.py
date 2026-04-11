@@ -10,3 +10,10 @@ class TaskSource(Protocol):
         Get all tasks
         :return: iterable of Task
         """
+
+
+    def load_tasks(self) -> None:
+        """
+        Load all tasks into TaskSource
+        :return: None
+        """

@@ -15,3 +15,5 @@ class GeneratorSource:
                 payload = {"name": f"Task N {self.cur_task}", "n": self.cur_task},
             )
             self.cur_task += 1
+
+    def load_tasks(self) -> None: ...

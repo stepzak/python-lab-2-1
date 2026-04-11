@@ -14,8 +14,10 @@ from src.sources import FileSource, GeneratorSource, ApiSource
 )
 def test_source(source_cls, args, err):
     source = source_cls(*args)
+
     if not err:
         tasks = []
+        source.load_tasks()
         for task in source.get_tasks():
             task.start()
             task.result = {"result": "ok"}

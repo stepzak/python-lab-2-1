@@ -174,3 +174,11 @@ class Task:
             "finished": self.finished,
             "expired": self.expired
         }
+
+
+    def __lt__(self, other: 'Task') -> bool:
+        if not isinstance(other, Task):
+            return NotImplemented
+        if self.priority != other.priority:
+            return self.priority > other.priority
+        return self._created_at < other._created_at
