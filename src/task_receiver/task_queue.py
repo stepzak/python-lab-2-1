@@ -43,7 +43,7 @@ class TaskQueue(Iterable[Task]):
         Will return tasks that have "attr1" between 1 and 4; and attr2 == 3
         :return:
         """
-        return filter(lambda x: self._matches(x, params), self._storage)
+        return (task for task in self._storage if self._matches(task, params))
 
     @staticmethod
     def _matches(task: 'Task', params: dict[str, dict[str, Any]]) -> bool:
