@@ -6,7 +6,7 @@ from src.task_receiver import Task
 TaskQueueQuery = dict[str, dict[str, Any]]
 
 class TaskQueue(Iterable[Task]):
-    __slots__ = ("_storage",)
+    __slots__ = ("_storage", "_index")
     """
     Tasks Priority Queue.
     Old tasks prioritised over new ones
@@ -14,6 +14,7 @@ class TaskQueue(Iterable[Task]):
 
     def __init__(self, tasks: Optional[Iterable[Task]] = None):
         self._storage = tasks or []
+        self._index = 0
         heapq.heapify(self._storage)
 
     def push(self, task: Task):
@@ -33,6 +34,14 @@ class TaskQueue(Iterable[Task]):
     def __iter__(self) -> Iterable[Task]:
         for task in self._storage:
             yield task
+
+    def __next__(self):
+        if self._index >= len(self._storage):
+            raise StopIteration
+
+        task = self._storage[self._index]
+        self._index += 1
+        return task
 
     def query(self, params: TaskQueueQuery) -> Iterator['Task']:
         """

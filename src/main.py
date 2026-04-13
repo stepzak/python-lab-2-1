@@ -1,9 +1,8 @@
 import sys
 
 from src.consumer import consumer
-from src.sources import GeneratorSource, FileSource
-from src.constants import TASKS_FILE, API_URL
-from src.sources.api_source import ApiSource
+from src.sources import FileSource
+from src.constants import TASKS_FILE
 import logging
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
