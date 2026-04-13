@@ -1,12 +1,11 @@
 import heapq
-from _typeshed import SupportsNext, SupportsIter
 from typing import Optional, Iterable, Any, Iterator
 
 from src.task_receiver import Task
 
 TaskQueueQuery = dict[str, dict[str, Any]]
 
-class TaskQueue(Iterable[Task], SupportsIter):
+class TaskQueue(Iterable[Task]):
     __slots__ = ("_storage", "_index")
     """
     Tasks Priority Queue.
