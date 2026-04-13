@@ -13,7 +13,7 @@ class TaskQueue(Iterable[Task]):
     """
 
     def __init__(self, tasks: Optional[Iterable[Task]] = None):
-        self._storage = tasks or []
+        self._storage = list(tasks) or []
         self._index = 0
         heapq.heapify(self._storage)
 
