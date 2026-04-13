@@ -13,7 +13,8 @@ class TaskQueue(Iterable[Task]):
     """
 
     def __init__(self, tasks: Optional[Iterable[Task]] = None):
-        self._storage = list(tasks) or []
+        self._storage = tasks or []
+        self._storage = list(self._storage)
         self._index = 0
         heapq.heapify(self._storage)
 
@@ -42,7 +43,7 @@ class TaskQueue(Iterable[Task]):
         Will return tasks that have "attr1" between 1 and 4; and attr2 == 3
         :return:
         """
-        return (task for task in self._storage if self._matches(task, params))
+        return filter(lambda x: self._matches(x, params), self._storage)
 
     @staticmethod
     def _matches(task: 'Task', params: dict[str, dict[str, Any]]) -> bool:
