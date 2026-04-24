@@ -2,7 +2,7 @@
 name = "python-lab-2-1"
 version = "0.2.0"
 description = "Simple task source protocol"
-requires-python = ">=3.12"
+requires-python = ">=3.14"
 dependencies = [
     "pytest>=8.4.2",
     "jsonschema>=4.26.0"
@@ -11,3 +11,5 @@ dependencies = [
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
 ]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"

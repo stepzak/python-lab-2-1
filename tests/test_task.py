@@ -12,7 +12,8 @@ from src.task_receiver.exceptions import (
 
 
 class TestTaskDescriptors:
-    def test_id_is_lazy_and_unique(self, task):
+    def test_id_is_lazy_and_unique(self, simple_task):
+        task = simple_task
         task_id = task.id
         assert task.id == task_id
 
@@ -22,31 +23,33 @@ class TestTaskDescriptors:
         with pytest.raises(InvalidPriorityError):
             Task(description="Bad", priority=0)
 
-    def test_status_transition_validation(self, task):
+    def test_status_transition_validation(self, simple_task):
+        task = simple_task
         task.start()
         with pytest.raises(InvalidStatusError):
             task.status = Status.NEW
 
 
 class TestTaskLogic:
-    def test_successful_completion(self, task):
+    def test_successful_completion(self, simple_task):
+        task = simple_task
         task.start()
         task.result = {"output": "ok"}
         assert task.status == Status.SUCCESS
         assert task.finished is True
         assert task.result == {"output": "ok"}
 
-    def test_failure_handling(self, task):
+    def test_failure_handling(self, simple_task):
         error = ValueError("Computation failed")
-        task.exception = error
-        assert task.status == Status.FAILURE
+        simple_task.exception = error
+        assert simple_task.status == Status.FAILURE
         with pytest.raises(ValueError):
-            _ = task.result
+            _ = simple_task.result
 
-    def test_cancel_logic(self, task):
-        task.cancel()
-        assert task.status == Status.CANCELLED
-        assert isinstance(task.exception, CancelledError)
+    def test_cancel_logic(self, simple_task):
+        simple_task.cancel()
+        assert simple_task.status == Status.CANCELLED
+        assert isinstance(simple_task.exception, CancelledError)
 
 
 class TestTaskExpiration:
@@ -56,27 +59,27 @@ class TestTaskExpiration:
             Task(description = "", deadline=past)
 
     @pytest.mark.slow
-    def test_task_expiry_during_execution(self, task):
+    def test_task_expiry_during_execution(self, simple_task):
         future = datetime.now() + timedelta(seconds=0.1)
-        task._deadline = future
+        simple_task._deadline = future
         time.sleep(0.11)
 
-        assert task.expired is True
+        assert simple_task.expired is True
         with pytest.raises(ExpiredError):
-            task.start()
-        assert task.status == Status.FAILURE
+            simple_task.start()
+        assert simple_task.status == Status.FAILURE
 
 
 class TestTaskIntegrity:
-    def test_cannot_edit_finished_task(self, task):
-        task.cancel()
+    def test_cannot_edit_finished_task(self, simple_task):
+        simple_task.cancel()
         with pytest.raises(InvalidStatusError):
-            task.description = "New text"
+            simple_task.description = "New text"
         with pytest.raises(InvalidStatusError):
-            task.result = "data"
+            simple_task.result = "data"
 
-    def test_to_dict_serialization(self, task):
-        data = task.to_dict()
+    def test_to_dict_serialization(self, simple_task):
+        data = simple_task.to_dict()
         assert data["description"] == "Test task"
         assert "id" in data
         assert data["status"] == "NEW"

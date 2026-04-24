@@ -67,6 +67,10 @@ class Task:
         self._payload = payload or {}
 
     @property
+    def payload(self) -> dict:
+        return self._payload
+
+    @property
     def deadline(self) -> Optional[datetime]:
         return self._deadline
 
@@ -180,5 +184,5 @@ class Task:
         if not isinstance(other, Task):
             return NotImplemented
         if self.priority != other.priority:
-            return self.priority > other.priority
-        return self._created_at < other._created_at
+            return self.priority < other.priority
+        return self._created_at > other._created_at

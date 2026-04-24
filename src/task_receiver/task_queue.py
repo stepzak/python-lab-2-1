@@ -16,15 +16,15 @@ class TaskQueue(Iterable[Task]):
         self._storage = tasks or []
         self._storage = list(self._storage)
         self._index = 0
-        heapq.heapify(self._storage)
+        heapq.heapify_max(self._storage)
 
     def push(self, task: Task):
-        heapq.heappush(self._storage, task)
+        heapq.heappush_max(self._storage, task)
 
     def pop(self) -> Task:
         if not self._storage:
             raise IndexError("Task queue is empty")
-        return heapq.heappop(self._storage)
+        return heapq.heappop_max(self._storage)
 
     def peek(self) -> Task:
         if not self._storage:

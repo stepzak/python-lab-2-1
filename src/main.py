@@ -1,21 +1,38 @@
+import asyncio
 import sys
-
-from src.consumer import consumer
-from src.sources import FileSource
-from src.constants import TASKS_FILE
+import time
 import logging
+
+from src.task_receiver import Task
+from src.task_receiver.ext.asyncio import AsyncExecutor
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 
-def main() -> None:
+class ComputeHandler:
+    async def handle(self, task: Task) -> int:
+        await asyncio.sleep(1)
+        payload_data = task.payload.get("data", 0)
+        return payload_data * 2
+
+
+async def main() -> None:
     """
     Обязательнная составляющая программ, которые сдаются. Является точкой входа в приложение
     :return: Данная функция ничего не возвращает
     """
-    sources = [FileSource(TASKS_FILE)]
-    for source in sources:
-        consumer(source)
+    async with AsyncExecutor(max_workers=2) as executor:
+        executor.register_handler("compute", ComputeHandler())
+
+        tasks = [
+            Task(description = "", priority=1, payload={"data": 10}),
+            Task(description = "", priority=10, payload={"data": 5}),
+        ]
+        now = time.time()
+        for t in tasks:
+            await executor.submit("compute", t)
+
+    print(f"Total: {time.time() - now}s")
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
