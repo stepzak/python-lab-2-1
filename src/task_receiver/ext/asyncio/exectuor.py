@@ -1,9 +1,8 @@
 import asyncio
 import logging
-from typing import Optional
 
 from src.task_receiver import Task
-from src.task_receiver.ext.asyncio import TaskHandler
+from src.task_receiver.ext.asyncio import AsyncTaskHandler
 
 logger = logging.getLogger("AsyncExecutor")
 
@@ -12,16 +11,35 @@ class AsyncExecutor:
     __slots__ = ("queue", "handlers", "max_workers", "_workers", "_is_running")
 
     def __init__(self, max_workers: int = 3):
+        """
+        Async executor for tasks based on ```asyncio.PriorityQueue```
+
+        :param max_workers: maximum number of workers to use
+
+        Usage: ``async with AsyncExecutor() as executor: ...``
+        """
         self.queue = asyncio.PriorityQueue()
-        self.handlers: dict[str, TaskHandler] = {}
+        self.handlers: dict[str, AsyncTaskHandler] = {}
         self.max_workers = max_workers
         self._workers: list[asyncio.Task] = []
         self._is_running = False
 
-    def register_handler(self, handler_type: str, handler: TaskHandler):
+    def register_handler(self, handler_type: str, handler: AsyncTaskHandler) -> None:
+        """
+        Register a handler type and a handler that will execute tasks
+        :param handler_type: type of handler to register
+        :param handler: handler to register
+        :return: None
+        """
         self.handlers[handler_type] = handler
 
-    async def submit(self, handle_type: str, task: Task):
+    async def submit(self, handle_type: str, task: Task) -> None:
+        """
+        Submit a task to the executor
+        :param handle_type: handler type
+        :param task: Task to submit
+        :return: None
+        """
         await self.queue.put((task.priority, handle_type, task))
         logger.info(f"Task {task.id} was put into queue with priority {task.priority}")
 
@@ -53,7 +71,7 @@ class AsyncExecutor:
             except Exception as e:
                 logger.critical(f"Worker fatal error: {e}")
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> 'AsyncExecutor':
         self._is_running = True
         self._workers = [asyncio.create_task(self._worker()) for _ in range(self.max_workers)]
         return self

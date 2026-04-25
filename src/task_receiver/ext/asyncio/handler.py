@@ -4,5 +4,13 @@ from src.task_receiver import Task
 
 
 @runtime_checkable
-class TaskHandler(Protocol):
-    async def handle(self, task: Task) -> Any: ...
+class AsyncTaskHandler(Protocol):
+    """
+    Async task handler protocol
+    """
+    async def handle(self, task: Task) -> Any:
+        """
+        Handler function that will be called within ```AsyncExecutor```
+        :param task: Task to handle
+        :return: Any
+        """
